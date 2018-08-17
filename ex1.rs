@@ -2,5 +2,5 @@
 // Make me compile! :)
 
 fn main() {
-    println();
+    println!("hehe");
 }

@@ -8,16 +8,22 @@ use std::num::ParseIntError;
 
 fn main() {
     let mut tokens = 100;
-    let pretend_user_input = "8";
+    let pretend_user_input = "11s";
 
-    let cost = try!(total_cost(pretend_user_input));
-
-    if cost > tokens {
-        println!("You can't afford that many!");
-    } else {
-        tokens -= cost;
-        println!("You now have {} tokens.", tokens);
+    match total_cost(pretend_user_input) {
+        Ok(cost) => {
+            if cost > tokens {
+                println!("You can't afford that many!");
+            } else {
+                tokens -= cost;
+                println!("You now have {} tokens.", tokens);
+            }
+        },
+        Err(e) => {
+            println!("hehe error {:?}", e)
+        }
     }
+
 }
 
 pub fn total_cost(item_quantity: &str) -> Result<i32, ParseIntError> {

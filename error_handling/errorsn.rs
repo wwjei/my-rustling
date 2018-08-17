@@ -14,18 +14,31 @@
 // that type from the body of read_and_validate?
 //
 // Scroll down for hints :)
-
+#![feature(box_syntax)]
 use std::error;
 use std::fmt;
 use std::io;
 
+#[derive(Debug)]
+enum ReadError {
+  HeHe
+}
+
+impl error::Error for ReadError {
+    fn description(&self) -> &str{
+        "uh-oh!"
+    }
+}
+
 // PositiveNonzeroInteger is a struct defined below the tests.
-fn read_and_validate(b: &mut io::BufRead) -> Result<PositiveNonzeroInteger, ???> {
+fn read_and_validate(b: &mut io::BufRead) -> Result<PositiveNonzeroInteger, Box<error::Error>> {
     let mut line = String::new();
     b.read_line(&mut line);
-    let num: i64 = line.trim().parse();
-    let answer = PositiveNonzeroInteger::new(num);
-    answer
+    let num :i64 = line.trim().parse()?;
+    match PositiveNonzeroInteger::new(num) {
+        Ok(v) => Ok(v),
+        Err(e) => Err(box ReadError::HeHe)
+    }
 }
 
 // This is a test helper function that turns a &str into a BufReader.
